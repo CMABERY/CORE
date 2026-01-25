@@ -11,6 +11,17 @@ def read_zip(zpath: Path):
         return {name: z.read(name) for name in z.namelist() if not name.endswith("/")}
 
 def main():
+    from pathlib import Path
+
+# ... after parsing argv ...
+zpath = Path(sys.argv[1])
+
+if not zpath.exists():
+    print(f"FAIL: pack path does not exist: {zpath}", file=sys.stderr)
+    print("CWD:", Path.cwd(), file=sys.stderr)
+    print("CWD contents:", list(Path.cwd().iterdir()), file=sys.stderr)
+    raise SystemExit(1)
+
     if len(sys.argv) != 2:
         print("usage: python verify_evidence_pack_integrity.py <pack.zip>", file=sys.stderr)
         return 2
