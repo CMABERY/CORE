@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpo-contracts@0.1.0/policy_rule.schema.json",
+  "title": "CPO Policy Rule",
+  "type": "object",
+  "oneOf": [
+    {
+      "required": [
+        "all"
+      ],
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "cpo-contracts@0.1.0/policy_rule.schema.json"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "any"
+      ],
+      "properties": {
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "cpo-contracts@0.1.0/policy_rule.schema.json"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "not"
+      ],
+      "properties": {
+        "not": {
+          "$ref": "cpo-contracts@0.1.0/policy_rule.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "exists"
+      ],
+      "properties": {
+        "exists": {
+          "$ref": "cpo-contracts@0.1.0/pointer_ref.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "not_empty"
+      ],
+      "properties": {
+        "not_empty": {
+          "$ref": "cpo-contracts@0.1.0/pointer_ref.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "equals"
+      ],
+      "properties": {
+        "equals": {
+          "$ref": "cpo-contracts@0.1.0/binary_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "in"
+      ],
+      "properties": {
+        "in": {
+          "$ref": "cpo-contracts@0.1.0/in_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "gt"
+      ],
+      "properties": {
+        "gt": {
+          "$ref": "cpo-contracts@0.1.0/binary_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "gte"
+      ],
+      "properties": {
+        "gte": {
+          "$ref": "cpo-contracts@0.1.0/binary_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "lt"
+      ],
+      "properties": {
+        "lt": {
+          "$ref": "cpo-contracts@0.1.0/binary_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "required": [
+        "lte"
+      ],
+      "properties": {
+        "lte": {
+          "$ref": "cpo-contracts@0.1.0/binary_op.schema.json"
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

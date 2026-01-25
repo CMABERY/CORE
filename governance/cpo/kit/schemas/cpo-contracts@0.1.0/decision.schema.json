@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpo-contracts@0.1.0/decision.schema.json",
+  "title": "CPO Decision",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "decision_id",
+    "statement",
+    "success_criteria",
+    "rollback_trigger",
+    "confidence",
+    "created_at",
+    "created_by"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "cpo-contracts@0.1.0"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "string"
+    },
+    "success_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "rollback_trigger": {
+      "type": [
+        "string",
+        "object"
+      ],
+      "minLength": 1
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "exploratory_bet": {
+      "type": "boolean",
+      "default": false
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "assumption_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "supersedes_decision_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersede_reason": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

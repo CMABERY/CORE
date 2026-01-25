@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpo-contracts@0.1.0/charter.schema.json",
+  "title": "CPO Charter",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "semver",
+    "definitions",
+    "mode_policy",
+    "policy_checks",
+    "invariants",
+    "meta_rules"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "cpo-contracts@0.1.0"
+    },
+    "semver": {
+      "type": "string"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "text",
+          "status"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "deprecated"
+            ]
+          },
+          "deprecated_in": {
+            "type": "string"
+          },
+          "replaced_by": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "mode_policy": {
+      "type": "object",
+      "required": [
+        "allowed_actions_all_modes"
+      ],
+      "properties": {
+        "allowed_actions_all_modes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_actions_by_mode": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "allowed_transitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "emergency": {
+          "type": "object",
+          "properties": {
+            "max_hours": {
+              "type": "number"
+            },
+            "must_exit_to": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "policy_checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "allow_exception",
+          "severity",
+          "description"
+        ],
+        "properties": {
+          "allow_exception": {
+            "type": "boolean"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "allow_exception",
+          "applies_to",
+          "rule"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "allow_exception": {
+            "type": "boolean"
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rule": {
+            "$ref": "cpo-contracts@0.1.0/policy_rule.schema.json"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "meta_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "allow_exception",
+          "applies_to",
+          "rule"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "allow_exception": {
+            "const": false
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rule": {
+            "$ref": "cpo-contracts@0.1.0/policy_rule.schema.json"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

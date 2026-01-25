@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpo-contracts@0.1.0/pointer_ref.schema.json",
+  "title": "JSON Pointer Reference",
+  "type": "object",
+  "required": [
+    "path"
+  ],
+  "properties": {
+    "path": {
+      "type": "string",
+      "pattern": "^/(action|actor|resolved/charter|resolved/state|resources|now)(/.*)?$"
+    }
+  },
+  "additionalProperties": false
+}
