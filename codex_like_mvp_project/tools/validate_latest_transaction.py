@@ -1,3 +1,10 @@
+try:
+    from jsonschema import Draft202012Validator
+except ImportError:
+    raise SystemExit(
+        "jsonschema is required for schema validation. "
+        "Run with `pip install jsonschema` or use the schema CI lane."
+    )
 """
 validate_latest_transaction.py
 
