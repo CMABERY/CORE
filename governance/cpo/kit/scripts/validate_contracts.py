@@ -5,42 +5,63 @@ from urllib.parse import urljoin
 from jsonschema import Draft202012Validator, RefResolver
 
 ROOT = Path(__file__).resolve().parents[1]
+
 SCHEMA_NS = "urn:cpo-contracts@0.1.0/"
+LOGICAL_PREFIX = "cpo-contracts@0.1.0/"
 
 def load_json(p: Path):
     return json.loads(p.read_text(encoding="utf-8"))
 
+def canonical_ref(ref: str) -> str:
+    """
+    Canonicalize a $ref to a single absolute URI under SCHEMA_NS.
+    """
+    # Already canonical
+    if ref.startswith(SCHEMA_NS):
+        return ref
+
+    # Logical ID prefix → strip and re-anchor once
+    if ref.startswith(LOGICAL_PREFIX):
+        ref = ref[len(LOGICAL_PREFIX):]
+
+    # Relative path → anchor
+    return urljoin(SCHEMA_NS, ref)
+
 def normalize_refs(obj):
-    """
-    Recursively rewrite $ref values to absolute URIs
-    under SCHEMA_NS.
-    """
     if isinstance(obj, dict):
         if "$ref" in obj:
-            ref = obj["$ref"]
-            if not ref.startswith(SCHEMA_NS):
-                obj["$ref"] = urljoin(SCHEMA_NS, ref)
+            obj["$ref"] = canonical_ref(obj["$ref"])
         for v in obj.values():
             normalize_refs(v)
     elif isinstance(obj, list):
         for v in obj:
             normalize_refs(v)
 
-def canonicalize_schema(schema, raw_id):
+def canonicalize_schema(schema: dict, raw_id: str):
+    # Normalize $id
+    if raw_id.startswith(LOGICAL_PREFIX):
+        raw_id = raw_id[len(LOGICAL_PREFIX):]
+
     canonical_id = urljoin(SCHEMA_NS, raw_id)
     schema["$id"] = canonical_id
+
+    # Normalize all $ref recursively
     normalize_refs(schema)
+
     return canonical_id, schema
 
 def load_schema_store(schema_root: Path):
     store = {}
     for path in schema_root.rglob("*.schema.json"):
         schema = load_json(path)
+
         raw_id = schema.get("$id")
         if not raw_id:
             raise RuntimeError(f"Schema missing $id: {path}")
+
         cid, normalized = canonicalize_schema(schema, raw_id)
         store[cid] = normalized
+
     return store
 
 def validate(schema_path: Path, instance_path: Path):
