@@ -10,26 +10,37 @@ SCHEMA_NS = "urn:cpo-contracts@0.1.0/"
 def load_json(p: Path):
     return json.loads(p.read_text(encoding="utf-8"))
 
-def canonicalize_schema_ids(schema_root: Path):
+def normalize_refs(obj):
     """
-    Load schemas and rewrite $id to absolute URIs under a fixed namespace.
-    This avoids recursive rebasing of relative $id/$ref values.
+    Recursively rewrite $ref values to absolute URIs
+    under SCHEMA_NS.
     """
-    store = {}
+    if isinstance(obj, dict):
+        if "$ref" in obj:
+            ref = obj["$ref"]
+            if not ref.startswith(SCHEMA_NS):
+                obj["$ref"] = urljoin(SCHEMA_NS, ref)
+        for v in obj.values():
+            normalize_refs(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            normalize_refs(v)
 
+def canonicalize_schema(schema, raw_id):
+    canonical_id = urljoin(SCHEMA_NS, raw_id)
+    schema["$id"] = canonical_id
+    normalize_refs(schema)
+    return canonical_id, schema
+
+def load_schema_store(schema_root: Path):
+    store = {}
     for path in schema_root.rglob("*.schema.json"):
         schema = load_json(path)
-
         raw_id = schema.get("$id")
         if not raw_id:
             raise RuntimeError(f"Schema missing $id: {path}")
-
-        # Normalize to absolute URI
-        canonical_id = urljoin(SCHEMA_NS, raw_id)
-
-        schema["$id"] = canonical_id
-        store[canonical_id] = schema
-
+        cid, normalized = canonicalize_schema(schema, raw_id)
+        store[cid] = normalized
     return store
 
 def validate(schema_path: Path, instance_path: Path):
@@ -37,11 +48,10 @@ def validate(schema_path: Path, instance_path: Path):
     instance = load_json(instance_path)
 
     schema_root = ROOT / "schemas" / "cpo-contracts@0.1.0"
-    store = canonicalize_schema_ids(schema_root)
+    store = load_schema_store(schema_root)
 
-    # Rebase the root schema $id as well
-    root_id = urljoin(SCHEMA_NS, schema["$id"])
-    schema["$id"] = root_id
+    raw_id = schema["$id"]
+    root_id, schema = canonicalize_schema(schema, raw_id)
 
     resolver = RefResolver(base_uri=root_id, referrer=schema, store=store)
     validator = Draft202012Validator(schema, resolver=resolver)
