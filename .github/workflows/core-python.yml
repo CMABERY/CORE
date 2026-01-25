@@ -1,0 +1,39 @@
+name: core-python
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: UTF-8 guard
+        run: |
+          python scripts/check_utf8.py
+
+      - name: Compile (syntax check)
+        run: |
+          python -m compileall codex_like_mvp_project/codex_like_mvp
+
+      - name: Self-tests (stdlib only)
+        run: |
+          cd codex_like_mvp_project
+          python -m tools.test_merge3
+          python -m tools.test_redaction
+          python -m tools.test_secret_guardrails
+
+      - name: Demo (review-only) + validators
+        run: |
+          cd codex_like_mvp_project
+          python -m codex_like_mvp.client.mvp_cli demo
+          python tools/validate_latest_transaction.py
+          python tools/validate_invariants.py

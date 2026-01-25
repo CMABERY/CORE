@@ -82,3 +82,23 @@ python tools/validate_latest_transaction.py
 python tools/validate_invariants.py
 ```
 
+
+
+## Quickstart
+
+From the CORE repository root:
+
+```bash
+cd codex_like_mvp_project
+python -m codex_like_mvp.client.mvp_cli demo
+```
+
+
+## Self-tests
+
+```bash
+cd codex_like_mvp_project
+python -m tools.test_merge3
+python -m tools.test_redaction
+python -m tools.test_secret_guardrails
+```

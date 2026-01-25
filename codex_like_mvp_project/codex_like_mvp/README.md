@@ -11,7 +11,7 @@ This is intentionally small and dependency-light (stdlib only).
 
 ## Quick demo
 
-From the repository root:
+From `codex_like_mvp_project/` (project root):
 
 ```bash
 python -m codex_like_mvp.client.mvp_cli demo
