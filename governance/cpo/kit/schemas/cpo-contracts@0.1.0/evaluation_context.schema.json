@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpo-contracts@0.1.0/evaluation_context.schema.json",
+  "title": "CPO Evaluation Context",
+  "type": "object",
+  "required": [
+    "action",
+    "actor",
+    "resolved",
+    "resources",
+    "now"
+  ],
+  "properties": {
+    "action": {
+      "type": "object"
+    },
+    "actor": {
+      "type": "object"
+    },
+    "resolved": {
+      "type": "object"
+    },
+    "resources": {
+      "type": "object"
+    },
+    "now": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

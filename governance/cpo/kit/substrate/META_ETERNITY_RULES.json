@@ -1,0 +1,25 @@
+{
+  "version": "meta-eternity@0.1",
+  "rules": [
+    {
+      "id": "META-ETERNITY-001",
+      "statement": "Change control must exist and be non-exceptionable."
+    },
+    {
+      "id": "META-ETERNITY-002",
+      "statement": "Meta-rules must not be empty."
+    },
+    {
+      "id": "META-ETERNITY-003",
+      "statement": "No wildcard '*' allowlist in allowed_actions_all_modes."
+    },
+    {
+      "id": "META-ETERNITY-004",
+      "statement": "Trust boundary declaration must be present and versioned at activation."
+    },
+    {
+      "id": "META-ETERNITY-005",
+      "statement": "Approval-policy changes require independent approvals."
+    }
+  ]
+}

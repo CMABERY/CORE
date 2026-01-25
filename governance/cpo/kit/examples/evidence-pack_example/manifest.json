@@ -1,0 +1,22 @@
+{
+  "protocol_version": "evidence-pack@1.0.0",
+  "pack_id": "PACK-EXAMPLE-0001",
+  "agent": {
+    "id": "AGENT-001",
+    "name": "ExampleAgent",
+    "owner": "team:example"
+  },
+  "window": {
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-01-25T00:00:00Z"
+  },
+  "integrity": {
+    "algo": "sha256",
+    "hash_chain_head": "sha256:TODO"
+  },
+  "exports": {
+    "pdf": "exports/evidence_pack.pdf",
+    "json": "exports/evidence_pack.json"
+  },
+  "files": "integrity/file_hashes.json"
+}
