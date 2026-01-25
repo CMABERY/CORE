@@ -1,0 +1,9 @@
+# CODEOWNERS
+# Update owners to match your GitHub org/users/teams.
+# Enforced when branch protections require CODEOWNERS review.
+
+* @CMABERY
+
+# High-signal surfaces
+/codex_like_mvp_project/specs/ @CMABERY
+/codex_like_mvp_project/tools/ @CMABERY
