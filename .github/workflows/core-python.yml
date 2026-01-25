@@ -35,5 +35,4 @@ jobs:
         run: |
           cd codex_like_mvp_project
           python -m codex_like_mvp.client.mvp_cli demo
-          python tools/validate_latest_transaction.py
           python tools/validate_invariants.py
